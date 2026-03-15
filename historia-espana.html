@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historia de España — Temas Increíbles</title>
+  <style>
+    :root {
+      --rojo: #c0392b;
+      --amarillo: #f39c12;
+      --dorado: #d4a017;
+      --fondo: #1a1a2e;
+      --fondo2: #16213e;
+      --fondo3: #0f3460;
+      --texto: #eaeaea;
+      --subtexto: #a0a0b8;
+      --card: #1e2a4a;
+      --card-hover: #253561;
+      --borde: #2e3f6f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--fondo);
+      color: var(--texto);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, var(--rojo) 0%, #8b0000 40%, var(--fondo3) 100%);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 3px solid var(--dorado);
+    }
+    header::before {
+      content: '⚜';
+      position: absolute;
+      top: 50%;
+      left: 3rem;
+      transform: translateY(-50%);
+      font-size: 4rem;
+      opacity: 0.15;
+    }
+    header::after {
+      content: '⚜';
+      position: absolute;
+      top: 50%;
+      right: 3rem;
+      transform: translateY(-50%);
+      font-size: 4rem;
+      opacity: 0.15;
+    }
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    }
+    header p {
+      margin-top: 0.5rem;
+      color: #ffd700;
+      font-style: italic;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    /* BARRA DE BÚSQUEDA */
+    .search-container {
+      background: var(--fondo2);
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--borde);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .search-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    #buscador {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.75rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid var(--borde);
+      background: var(--fondo3);
+      color: var(--texto);
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+    #buscador:focus { border-color: var(--dorado); }
+    #buscador::placeholder { color: var(--subtexto); }
+
+    .filtros {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .filtro-btn {
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--borde);
+      background: var(--fondo3);
+      color: var(--subtexto);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .filtro-btn:hover, .filtro-btn.activo {
+      background: var(--dorado);
+      color: #1a1a2e;
+      border-color: var(--dorado);
+      font-weight: bold;
+    }
+
+    /* ESTADÍSTICAS */
+    .stats {
+      max-width: 900px;
+      margin: 1rem auto 0;
+      padding: 0 2rem;
+      color: var(--subtexto);
+      font-size: 0.85rem;
+    }
+    #contador { color: var(--dorado); font-weight: bold; }
+
+    /* GRID DE CARDS */
+    .grid {
+      max-width: 900px;
+      margin: 1.5rem auto 3rem;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 1.4rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--dorado);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .card:hover {
+      background: var(--card-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      border-color: var(--dorado);
+    }
+    .card:hover::before { opacity: 1; }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      margin-bottom: 0.7rem;
+    }
+    .card-emoji { font-size: 1.8rem; flex-shrink: 0; }
+    .card-titulo {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: #fff;
+      line-height: 1.3;
+    }
+    .card-fecha {
+      font-size: 0.78rem;
+      color: var(--dorado);
+      margin-top: 0.25rem;
+      font-style: italic;
+    }
+
+    .card-descripcion {
+      font-size: 0.88rem;
+      color: var(--subtexto);
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .tag {
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .tag-era {
+      background: rgba(192, 57, 43, 0.25);
+      color: #e74c3c;
+      border: 1px solid rgba(192, 57, 43, 0.4);
+    }
+    .tag-cat {
+      background: rgba(212, 160, 23, 0.2);
+      color: var(--dorado);
+      border: 1px solid rgba(212, 160, 23, 0.35);
+    }
+
+    /* MODAL DE DETALLE */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.visible { display: flex; }
+    .modal {
+      background: var(--fondo2);
+      border: 1px solid var(--borde);
+      border-top: 3px solid var(--dorado);
+      border-radius: 14px;
+      max-width: 640px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: none;
+      border: none;
+      color: var(--subtexto);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--rojo); }
+    .modal-emoji { font-size: 3rem; margin-bottom: 0.5rem; }
+    .modal-titulo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+    .modal-fecha {
+      color: var(--dorado);
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    .modal-descripcion {
+      color: var(--texto);
+      line-height: 1.8;
+      font-size: 0.95rem;
+      margin-bottom: 1.2rem;
+    }
+    .modal-detalle {
+      color: var(--subtexto);
+      line-height: 1.8;
+      font-size: 0.9rem;
+      border-top: 1px solid var(--borde);
+      padding-top: 1rem;
+    }
+    .modal-detalle h4 {
+      color: var(--dorado);
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* SIN RESULTADOS */
+    .sin-resultados {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--subtexto);
+      grid-column: 1 / -1;
+    }
+    .sin-resultados span { font-size: 3rem; display: block; margin-bottom: 1rem; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--borde);
+      color: var(--subtexto);
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.6rem; }
+      .grid { grid-template-columns: 1fr; padding: 0 1rem; }
+      .search-inner { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>⚔️ Historia de España</h1>
+  <p>Descubre los episodios más fascinantes de la historia española</p>
+</header>
+
+<div class="search-container">
+  <div class="search-inner">
+    <input type="text" id="buscador" placeholder="Buscar temas, personajes, batallas, épocas..." autocomplete="off">
+    <div class="filtros" id="filtros"></div>
+  </div>
+</div>
+
+<div class="stats">
+  <span id="contador">0</span> temas encontrados
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="cerrarModal()">✕</button>
+    <div class="modal-emoji" id="m-emoji"></div>
+    <div class="modal-titulo" id="m-titulo"></div>
+    <div class="modal-fecha" id="m-fecha"></div>
+    <div class="modal-descripcion" id="m-desc"></div>
+    <div class="modal-detalle">
+      <h4>Datos curiosos</h4>
+      <div id="m-detalle"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Historia de España · App local · Todos los datos son históricos y educativos
+</footer>
+
+<script>
+const TEMAS = [
+  // PREHISTORIA Y ANTIGÜEDAD
+  {
+    id:1, emoji:"🦣", titulo:"Los pintores de Altamira",
+    fecha:"c. 36.000 - 14.000 a.C.", era:"Prehistoria",
+    categoria:"Arte", etiqueta:"Prehistoria",
+    desc:"Las cuevas de Altamira, en Cantabria, albergan las pinturas rupestres más impresionantes del mundo. Cuando el arqueólogo Marcelino Sanz de Sautuola las descubrió en 1879, la comunidad científica lo acusó de falsificación. Tardaron 20 años en reconocer su autenticidad.",
+    detalle:"Las pinturas representan bisontes, ciervos y jabalíes con una técnica asombrosa. Los artistas aprovechaban los relieves naturales de la roca para dar volumen a los animales. Se usaron ocre, carbón y hematites. El techo policromo tiene 14 metros de largo."
+  },
+  {
+    id:2, emoji:"🏛️", titulo:"Numancia: la ciudad que desafió a Roma",
+    fecha:"153 - 133 a.C.", era:"Antigüedad",
+    categoria:"Guerras", etiqueta:"Roma",
+    desc:"Durante 20 años, la pequeña ciudad celtíbera de Numancia (Soria) resistió los ataques del mayor ejército del mundo conocido. Cuando Escipión Emiliano la cercó finalmente con 60.000 soldados, sus 8.000 habitantes prefirieron morir o quemarse antes que rendirse.",
+    detalle:"Roma tardó tanto en tomarla que la 'vergüenza numantina' se convirtió en proverbio. El senado envió varias comisiones de investigación. La resistencia numantina fue tal inspiración que Cervantes escribió una tragedia llamada 'La destrucción de Numancia'."
+  },
+  {
+    id:3, emoji:"🐘", titulo:"Aníbal cruza los Pirineos",
+    fecha:"218 a.C.", era:"Antigüedad",
+    categoria:"Guerras", etiqueta:"Cartago",
+    desc:"El general cartaginés Aníbal Barca partió desde Hispania con 90.000 soldados, 12.000 jinetes y 37 elefantes de guerra. Cruzó los Pirineos y luego los Alpes para atacar Roma por sorpresa. La mayoría de los elefantes murieron en el camino, pero el audaz plan casi funcionó.",
+    detalle:"Aníbal nació en Hispania (Cartagena era una fundación de su padre Amílcar Barca). Venció a Roma en Trebia, Trasimeno y Cannas, donde mató a 70.000 romanos en un día. Nunca pudo tomar Roma y tras 16 años en Italia regresó derrotado a Cartago."
+  },
+  {
+    id:4, emoji:"⚗️", titulo:"Los romanos inventan Hispania",
+    fecha:"218 a.C. - 409 d.C.", era:"Antigüedad",
+    categoria:"Civilización", etiqueta:"Roma",
+    desc:"Durante 600 años, Hispania fue la provincia romana más próspera. Dio a Roma tres emperadores (Trajano, Adriano, Teodosio), dos grandes filósofos (Séneca, Marco Aurelio) y el poeta Marcial. El aceite, el vino y el garum hispanos se exportaban a todo el Imperio.",
+    detalle:"Trajano fue el primer emperador no nacido en Italia. Erigió la famosa columna Trajana en Roma. Adriano construyó la mayor muralla del mundo en Britania. Más de 2.000 ciudades romanas se fundaron en Hispania, muchas de las cuales son hoy capitales de provincia."
+  },
+
+  // VISIGODOS Y ALTA EDAD MEDIA
+  {
+    id:5, emoji:"👑", titulo:"El reino visigodo y el Liber Iudiciorum",
+    fecha:"418 - 711 d.C.", era:"Alta Edad Media",
+    categoria:"Política", etiqueta:"Visigodos",
+    desc:"Los visigodos crearon en Toledo el primer estado unitario de la Península. Su gran logro fue el Liber Iudiciorum (654 d.C.), un código de leyes que unificaba a hispanos y godos bajo las mismas normas. Fue tan avanzado que siguió usándose siglos después bajo el nombre de 'Fuero Juzgo'.",
+    detalle:"El rey Recesvinto lo promulgó en el III Concilio de Toledo. Tenía 500 artículos y regulaba desde herencias hasta torturas. Es uno de los primeros códigos legales de Europa donde el rey estaba también sometido a la ley. Alfonso X lo tradujo al castellano en el siglo XIII."
+  },
+  {
+    id:6, emoji:"🕌", titulo:"La conquista musulmana en 7 años",
+    fecha:"711 - 718 d.C.", era:"Alta Edad Media",
+    categoria:"Guerras", etiqueta:"Al-Ándalus",
+    desc:"En solo 7 años, un ejército de 7.000 beréberes bajo las órdenes de Tariq ibn Ziyad conquistó prácticamente toda la Península Ibérica. El reino visigodo, debilitado por guerras internas, se desmoronó tras la batalla de Guadalete. Solo las montañas del norte quedaron sin conquistar.",
+    detalle:"El estrecho de Gibraltar debe su nombre a Tariq (Yábal al-Táriq = monte de Tariq). Según la leyenda, el rey Rodrigo violó a la hija del conde Don Julián, quien vengó el agravio invitando a los musulmanes a cruzar. La rapidez de la conquista sigue siendo un misterio histórico."
+  },
+  {
+    id:7, emoji:"🌟", titulo:"Córdoba, la ciudad más grande de Europa",
+    fecha:"c. 950 - 1010 d.C.", era:"Alta Edad Media",
+    categoria:"Civilización", etiqueta:"Al-Ándalus",
+    desc:"En el siglo X, Córdoba era la ciudad más grande y culta de Europa occidental, con 500.000 habitantes, 300 mezquitas, 50 hospitales, 70 bibliotecas y alumbrado público en sus calles. Mientras el resto de Europa vivía en la oscuridad medieval, Córdoba brillaba como faro del conocimiento.",
+    detalle:"El califa Abderramán III se proclamó Califa de todo el Islam. Su biblioteca tenía 400.000 volúmenes. El médico Abulcasis (de Azahara) escribió la primera enciclopedia médica ilustrada. Maimónides, judío, y Averroes, musulmán, nacieron en Córdoba y sus obras revolucionaron el pensamiento europeo."
+  },
+
+  // RECONQUISTA
+  {
+    id:8, emoji:"⚔️", titulo:"Covadonga: el mito fundacional de España",
+    fecha:"722 d.C.", era:"Reconquista",
+    categoria:"Guerras", etiqueta:"Reconquista",
+    desc:"En un desfiladero asturiano, un noble visigodo llamado Pelayo y un puñado de guerreros derrotaron a una fuerza musulmana. La victoria fue pequeña militarmente, pero se convirtió en el mito fundacional de la Reconquista, que duraría 770 años. El Reino de Asturias nació aquí.",
+    detalle:"Las crónicas árabes apenas mencionan la batalla, considerándola insignificante. Las crónicas cristianas la exageraron enormemente. Pelayo fue proclamado rey y enterrado en la Cueva Santa. La basílica de Covadonga es hoy uno de los santuarios más visitados de España."
+  },
+  {
+    id:9, emoji:"🗡️", titulo:"El Cid Campeador, héroe de dos mundos",
+    fecha:"c. 1043 - 1099", era:"Reconquista",
+    categoria:"Personajes", etiqueta:"Reconquista",
+    desc:"Rodrigo Díaz de Vivar, 'El Cid', fue un guerrero que sirvió indistintamente a reyes cristianos y musulmanes, conquistó Valencia para sí mismo y nunca perdió una batalla. Su historia real es aún más fascinante que el poema épico que la inmortaliza.",
+    detalle:"'Campeador' significa 'campeón en el campo de batalla'. 'Cid' viene del árabe sayyid (señor). Fue desterrado dos veces por Alfonso VI. Los musulmanes lo llamaban 'el Campeador' con admiración. Su caballo Babieca fue enterrado junto a él. Su épica fue cantada en el Cantar de Mio Cid (~1200)."
+  },
+  {
+    id:10, emoji:"🏯", titulo:"Las Navas de Tolosa: el giro definitivo",
+    fecha:"1212", era:"Reconquista",
+    categoria:"Guerras", etiqueta:"Reconquista",
+    desc:"La batalla más decisiva de la Edad Media ibérica. Tres reyes cristianos —Castilla, Aragón y Navarra— se unieron por primera vez para enfrentarse al califa almohade Muhammad al-Nasir. La derrota musulmana abrió las puertas de Andalucía a la Reconquista.",
+    detalle:"El papa Inocencio III la declaró cruzada. Participaron caballeros franceses y portugueses. Muhammad al-Nasir huyó a Marruecos y murió al año siguiente. En 30 años cayeron Córdoba (1236) y Sevilla (1248). Solo quedó el reino de Granada hasta 1492."
+  },
+  {
+    id:11, emoji:"📚", titulo:"Alfonso X el Sabio y el español moderno",
+    fecha:"1252 - 1284", era:"Reconquista",
+    categoria:"Cultura", etiqueta:"Castilla",
+    desc:"El rey Alfonso X convirtió el castellano vulgar en lengua oficial del Estado, relegando el latín. Bajo su dirección se escribieron miles de páginas: las Cantigas de Santa María, la Historia de España, el Libro del ajedrez. Inventó en cierto modo la prosa castellana.",
+    detalle:"Fue candidato al trono del Sacro Imperio Romano Germánico. Tradujo al castellano obras árabes y hebreas de astronomía y matemáticas. Las tablas astronómicas alfonsinas fueron el estándar europeo durante 3 siglos. Sus juristas redactaron las Siete Partidas, el código legal más influyente de España."
+  },
+
+  // SIGLO XV Y DESCUBRIMIENTOS
+  {
+    id:12, emoji:"👸", titulo:"Isabel y Fernando: la unión que cambió el mundo",
+    fecha:"1469 - 1516", era:"Edad Moderna",
+    categoria:"Política", etiqueta:"Reyes Católicos",
+    desc:"El matrimonio secreto de Isabel de Castilla y Fernando de Aragón en 1469 unió dos coronas que controlaban la mayor parte de la Península. Juntos conquistaron Granada, expulsaron a los judíos, financiaron a Colón y crearon el Estado moderno español.",
+    detalle:"Isabel tenía 18 años y Fernando 17 cuando se casaron disfrazados para escapar de los espías del rey de Portugal. Isabel gobernó Castilla por derecho propio, no como esposa de rey. El papa Alejandro VI les otorgó el título de 'Reyes Católicos'. Maquiavelo usó a Fernando como modelo del príncipe ideal."
+  },
+  {
+    id:13, emoji:"🔥", titulo:"La Inquisición española: mitos y realidad",
+    fecha:"1478 - 1834", era:"Edad Moderna",
+    categoria:"Religión", etiqueta:"Inquisición",
+    desc:"La Inquisición española, creada en 1478, fue menos sangrienta de lo que su leyenda indica, pero fue un eficaz instrumento de control social durante 356 años. Procesó a unas 150.000 personas. Su imagen negativa fue en parte propaganda protestante del norte de Europa.",
+    detalle:"La 'leyenda negra' la exageró enormemente. Los historiadores modernos estiman entre 3.000 y 5.000 ejecutados en total (no los millones de la leyenda). Los inquisidores exigían pruebas y los acusados podían apelar. Sin embargo, el miedo que generó silenció el pensamiento libre por siglos."
+  },
+  {
+    id:14, emoji:"🚢", titulo:"1492: el año que cambió la Historia",
+    fecha:"1492", era:"Edad Moderna",
+    categoria:"Descubrimientos", etiqueta:"América",
+    desc:"En un solo año: cayó Granada (2 enero), fueron expulsados los judíos (31 marzo), Colón llegó a América (12 octubre) y Nebrija publicó la primera gramática de una lengua romance. Difícilmente hubo un año más transformador en la historia occidental.",
+    detalle:"Colón llegó creyendo haber alcanzado Asia. Murió convencido de ello. Fueron los exploradores posteriores quienes comprendieron que era un continente nuevo. El nombre 'América' viene del florentino Américo Vespucio, quien sí comprendió que era un 'Nuevo Mundo'. España tardó 20 años en entenderlo."
+  },
+  {
+    id:15, emoji:"🌍", titulo:"Hernán Cortés y la caída del Imperio Azteca",
+    fecha:"1519 - 1521", era:"Edad Moderna",
+    categoria:"Descubrimientos", etiqueta:"América",
+    desc:"Con solo 600 hombres, 16 caballos y 14 cañones, Hernán Cortés derrumbó el Imperio Azteca de Moctezuma, que tenía varios millones de súbditos. Una hazaña military que solo se explica por las alianzas con pueblos sometidos por los aztecas y la viruela.",
+    detalle:"Cortés quemó sus naves para evitar la deserción. La Malinche, intérprete nahua, fue clave en la conquista. La Noche Triste (1520) casi destruyó la expedición. Los tlaxcaltecas, enemigos de los aztecas, aportaron 200.000 guerreros. La viruela mató al 50-90% de la población indígena."
+  },
+  {
+    id:16, emoji:"🌊", titulo:"La primera vuelta al mundo",
+    fecha:"1519 - 1522", era:"Edad Moderna",
+    categoria:"Descubrimientos", etiqueta:"América",
+    desc:"Magallanes partió de Sevilla con 5 naves y 265 hombres para dar la vuelta al mundo. Solo regresó 1 barco con 18 supervivientes, sin Magallanes (muerto en Filipinas). Juan Sebastián Elcano fue quien completó la hazaña, demostrando que la Tierra era redonda.",
+    detalle:"El viaje duró 1.083 días. Atravesaron el estrecho que lleva el nombre de Magallanes en 38 días. Los marineros llegaron convencidos de que faltaba un día en su diario, demostrando el concepto de la línea de cambio de fecha. Carlos I les concedió un globo terráqueo con el lema 'Primus circumdedisti me'."
+  },
+
+  // SIGLO XVI - IMPERIO
+  {
+    id:17, emoji:"🌐", titulo:"Carlos V: dueño del mundo conocido",
+    fecha:"1516 - 1556", era:"Edad Moderna",
+    categoria:"Política", etiqueta:"Imperio",
+    desc:"Carlos I de España y V del Sacro Imperio gobernó el mayor imperio de su tiempo: España, los Países Bajos, Nápoles, Sicilia, el Nuevo Mundo y el título imperial alemán. Habló castellano con Dios, italiano con las mujeres, francés con los hombres y alemán con su caballo.",
+    detalle:"Fue el primer rey de España como Estado unificado. Abdicó voluntariamente (rarísimo en la historia) y se retiró al monasterio de Yuste, en Extremadura. Pasaba los días arreglando relojes. Su lema era 'Plus ultra' (más allá). Combatió a los turcos, los protestantes y al rey de Francia simultáneamente."
+  },
+  {
+    id:18, emoji:"🏗️", titulo:"El Escorial: la octava maravilla del mundo",
+    fecha:"1563 - 1584", era:"Edad Moderna",
+    categoria:"Arte", etiqueta:"Imperio",
+    desc:"Felipe II mandó construir El Escorial como palacio, monasterio, panteón real y símbolo del poder de la Monarquía Hispánica. Con 16 patios, 88 fuentes, 300 celdas, 1.200 puertas y 2.673 ventanas, fue el mayor edificio del siglo XVI.",
+    detalle:"El arquitecto Juan de Herrera tardó 21 años en construirlo. Su estilo austero y geométrico ('herreriano') influyó la arquitectura española durante siglos. Felipe II lo usó como centro de gobierno, recibiendo despachos y tomando decisiones desde una pequeña habitación junto al altar mayor. Tenía una biblioteca con 40.000 volúmenes."
+  },
+  {
+    id:19, emoji:"⛵", titulo:"La Armada Invencible: el mayor fracaso naval",
+    fecha:"1588", era:"Edad Moderna",
+    categoria:"Guerras", etiqueta:"Imperio",
+    desc:"Felipe II envió 130 barcos y 27.000 hombres a invadir Inglaterra. La Armada fue derrotada no tanto por los ingleses como por las tormentas del Atlántico norte. La pérdida de 63 barcos y 15.000 hombres marcó el inicio del declive del poder naval español.",
+    detalle:"Los ingleses llamaron a las tormentas 'el viento protestante'. Felipe II, al conocer la noticia, dijo: 'Mandé mis barcos a luchar contra los hombres, no contra los elementos de Dios'. La leyenda la llama 'Invencible', pero ese apelativo fue sarcástico. Los ingleses perdieron 0 barcos en combate."
+  },
+
+  // SIGLO XVII - BARROCO Y DECADENCIA
+  {
+    id:20, emoji:"🎨", titulo:"El Siglo de Oro español",
+    fecha:"c. 1550 - 1650", era:"Edad Moderna",
+    categoria:"Cultura", etiqueta:"Barroco",
+    desc:"Mientras el Imperio español se hundía políticamente, su cultura alcanzó cimas insuperables. Cervantes, Lope de Vega, Quevedo, Góngora, Calderón, Velázquez, Murillo, El Greco, Zurbarán. Jamás tantos genios coincidieron en un siglo en un solo país.",
+    detalle:"El Quijote (1605) es la novela más leída después de la Biblia. Lope de Vega escribió 1.500 comedias (se conservan 400). Velázquez fue esclavo liberado antes de ser el pintor favorito del rey. El Greco nació en Creta y llegó a Toledo buscando trabajo con Felipe II; rechazado, se quedó. La paradoja: gloria cultural en plena decadencia política."
+  },
+  {
+    id:21, emoji:"📖", titulo:"El Quijote: la novela que inventó la modernidad",
+    fecha:"1605 - 1615", era:"Edad Moderna",
+    categoria:"Cultura", etiqueta:"Barroco",
+    desc:"Miguel de Cervantes escribió el Quijote en la cárcel, arruinado y olvidado a los 58 años. Su historia de un hidalgo manchego que enloquece leyendo novelas de caballerías es considerada la primera novela moderna y la obra literaria más importante en lengua castellana.",
+    detalle:"Cervantes luchó en Lepanto (1571) donde perdió la movilidad de la mano izquierda. Fue capturado por piratas y estuvo 5 años cautivo en Argel. Murió pobre el mismo día que Shakespeare (23 abril 1616), aunque no exactamente: los calendarios julián y gregoriano difieren 10 días. La primera edición se agotó en semanas."
+  },
+  {
+    id:22, emoji:"🌹", titulo:"La expulsión de los moriscos",
+    fecha:"1609 - 1614", era:"Edad Moderna",
+    categoria:"Política", etiqueta:"Barroco",
+    desc:"Felipe III expulsó a 300.000 moriscos (descendientes de musulmanes bautizados) de España. Valencia perdió el 30% de su población. El impacto económico fue catastrófico para la agricultura levantina. Fue una de las mayores deportaciones étnicas de la historia europea.",
+    detalle:"La expulsión tardó 5 años en ejecutarse. Los moriscos se llevaron sus bienes muebles pero no inmuebles. Muchos murieron en el camino o fueron atacados al llegar al norte de África. Cervantes, en el Quijote, puso en boca de un morisco expulsado una crítica velada a la medida. El duque de Lerma, valido del rey, fue el artífice."
+  },
+
+  // SIGLO XVIII
+  {
+    id:23, emoji:"🎭", titulo:"La Guerra de Sucesión: España elige bando",
+    fecha:"1701 - 1715", era:"Edad Moderna",
+    categoria:"Guerras", etiqueta:"Borbones",
+    desc:"Cuando murió Carlos II sin heredero, Europa entera se enzarzó en guerra. ¿Sería rey un Borbón francés o un Habsburgo austriaco? España se dividió: Castilla apoyó a Felipe V (Borbón), Aragón y Cataluña apoyaron al Archiduque Carlos. La guerra transformó el mapa de Europa y de España.",
+    detalle:"El Tratado de Utrecht (1713) dio Gibraltar y Menorca a Gran Bretaña (Gibraltar sigue siendo británico). Felipe V abolió los fueros de Aragón y Valencia con los Decretos de Nueva Planta. Cataluña resistió hasta 1714; el 11 de septiembre es hoy su día nacional. La derrota explica parte del catalanismo moderno."
+  },
+  {
+    id:24, emoji:"💡", titulo:"La Ilustración española y el despotismo ilustrado",
+    fecha:"1746 - 1808", era:"Edad Moderna",
+    categoria:"Cultura", etiqueta:"Ilustración",
+    desc:"Carlos III fue el mejor rey de la historia española según muchos historiadores. Modernizó Madrid (primer alcantarillado, farolas, el Prado), expulsó a los jesuitas, reformó la economía y fomentó la educación. Goya comenzó su carrera pintando tapices para él.",
+    detalle:"Madrid olía tan mal que los ilustrados lo llamaban 'corte de las inmundicias'. Carlos III limpió literalmente la ciudad. Fundó la Biblioteca Nacional, la Real Academia de Medicina y el Jardín Botánico. Su ilustre ministro Floridablanca promovió el canal de Castilla. Murió tan querido que el pueblo lo lloró en las calles."
+  },
+
+  // SIGLO XIX
+  {
+    id:25, emoji:"🥁", titulo:"El 2 de mayo: el pueblo contra Napoleón",
+    fecha:"1808", era:"Siglo XIX",
+    categoria:"Guerras", etiqueta:"Independencia",
+    desc:"Cuando Napoleón secuestró a la familia real española y puso a su hermano José en el trono, el pueblo de Madrid se levantó espontáneamente el 2 de mayo de 1808. La brutalidad de la represión francesa incendió España entera. Comenzó la primera guerra de guerrillas de la historia moderna.",
+    detalle:"Goya inmortalzó la represalia en 'El 3 de mayo de 1808', el cuadro más influyente en la historia del arte moderno. La palabra 'guerrilla' (guerra pequeña) nació en este conflicto y se exportó a todos los idiomas. Wellington llamó a la campaña española 'la úlcera española' de Napoleón. 600.000 españoles murieron."
+  },
+  {
+    id:26, emoji:"📜", titulo:"La Constitución de Cádiz de 1812",
+    fecha:"1812", era:"Siglo XIX",
+    categoria:"Política", etiqueta:"Liberalismo",
+    desc:"Mientras Napoleón ocupaba España, las Cortes reunidas en Cádiz aprobaron la primera constitución española. Era radical para su época: soberanía nacional, separación de poderes, libertad de prensa, abolición del feudalismo. Los liberales de toda Europa la adoptaron como modelo.",
+    detalle:"Se llamó popularmente 'La Pepa' porque se promulgó el día de San José (19 de marzo). La expresión '¡Viva la Pepa!' viene de aquí. El rey Fernando VII la abolió al volver del exilio. Fue restaurada, abolida y restaurada varias veces. Fue modelo para las constituciones de Noruega, Portugal y varios países latinoamericanos."
+  },
+  {
+    id:27, emoji:"🎨", titulo:"Goya y los Desastres de la Guerra",
+    fecha:"1808 - 1828", era:"Siglo XIX",
+    categoria:"Arte", etiqueta:"Arte",
+    desc:"Francisco de Goya vivió la Guerra de la Independencia y la represión absolutista. Sus grabados 'Los Desastres de la Guerra' son el primer testimonio artístico que muestra la brutalidad de la guerra sin heroísmo ni gloria. Sus Pinturas Negras son precursoras del expresionismo del siglo XX.",
+    detalle:"Goya quedó sordo a los 46 años. Sus pinturas negras las hizo directamente sobre las paredes de su casa (la Quinta del Sordo). No estaban destinadas a ser vistas por nadie. Saturno devorando a su hijo y El aquelarre son obras de una modernidad que se adelanta 100 años. Murió exiliado en Burdeos."
+  },
+  {
+    id:28, emoji:"⚡", titulo:"El 98: la pérdida del último imperio",
+    fecha:"1898", era:"Siglo XIX",
+    categoria:"Política", etiqueta:"Decadencia",
+    desc:"En 1898, España perdió Cuba, Puerto Rico y Filipinas en una guerra contra Estados Unidos que duró 4 meses. El 'Desastre del 98' provocó una crisis de identidad nacional profunda que generó la brillante Generación del 98 (Unamuno, Machado, Baroja, Valle-Inclán).",
+    detalle:"La guerra comenzó por la explosión del USS Maine en La Habana, culpada a España (probablemente fue accidental). Unamuno escribió: 'Que inventen ellos'. Machado poetizó una España 'de charanga y pandereta'. Fue el catalizador del regeneracionismo. España se quedó sin colonias 400 años después de haberlas conquistado."
+  },
+
+  // SIGLO XX
+  {
+    id:29, emoji:"🏴", titulo:"La Guerra Civil: la herida que no cierra",
+    fecha:"1936 - 1939", era:"Siglo XX",
+    categoria:"Guerras", etiqueta:"Guerra Civil",
+    desc:"El golpe de estado del 18 de julio de 1936 contra la República derivó en una guerra civil de casi tres años. Medio millón de muertos, 500.000 exiliados, y las marcas de una fractura social que tardó décadas en cicatrizar. Fue el preludio de la Segunda Guerra Mundial.",
+    detalle:"Guernica (1937), el cuadro de Picasso, conmemora el bombardeo nazi de la ciudad vasca. Las Brigadas Internacionales atrajeron voluntarios de 50 países. Hemingway, Orwell y Malraux escribieron sobre ella. Franco recibió ayuda de Hitler y Mussolini. La República recibió ayuda de la URSS. Las democracias occidentales no intervinieron."
+  },
+  {
+    id:30, emoji:"🕊️", titulo:"La Transición: de la dictadura a la democracia",
+    fecha:"1975 - 1982", era:"Siglo XX",
+    categoria:"Política", etiqueta:"Democracia",
+    desc:"Tras la muerte de Franco en 1975, España realizó en 7 años una transición pacífica de 40 años de dictadura a una democracia plena. Fue admirada en todo el mundo como modelo para otras transiciones. La Constitución de 1978 fue aprobada con el 88% de los votos.",
+    detalle:"Adolfo Suárez, ex secretario del Movimiento franquista, fue paradójicamente el artífice de la democracia. El 23-F (intento de golpe de estado de 1981) fue neutralizado por el rey Juan Carlos I en un discurso televisivo. Los 'Pactos de la Moncloa' (1977) fueron un modelo de consenso económico en tiempos de crisis."
+  },
+  {
+    id:31, emoji:"🎪", titulo:"La Movida Madrileña: la explosión de libertad",
+    fecha:"1977 - 1985", era:"Siglo XX",
+    categoria:"Cultura", etiqueta:"Democracia",
+    desc:"Tras 40 años de represión franquista, Madrid explotó en un frenesí creativo sin precedentes. Arte, música, cine, moda y una forma de vivir radicalmente nueva. Almodóvar, Alaska, Mecano, Héroes del Silencio. La Movida fue la adolescencia tardía de una sociedad que se reencontró con la libertad.",
+    detalle:"Pedro Almodóvar filmaba sus primeras películas en Super 8. Tierno Galván, alcalde de Madrid, fue el padrino político de la Movida. El lema generacional era '¡que dure la fiesta!'. La heroína causó estragos entre la generación de la Movida. España pasó de ser la más austera de Europa a la más festiva en menos de una década."
+  },
+  {
+    id:32, emoji:"🏟️", titulo:"Los Juegos del 92: España llega al mundo",
+    fecha:"1992", era:"Siglo XX",
+    categoria:"Civilización", etiqueta:"España Moderna",
+    desc:"1992 fue el año en que España mostró al mundo que había llegado. Barcelona acogió los Juegos Olímpicos más brillantes del siglo, Sevilla organizó la Exposición Universal y Madrid fue Capital Europea de la Cultura. El año simbólico del V centenario del descubrimiento de América.",
+    detalle:"La inauguración olímpica con el flechazo de Antonio Rebollo fue el símbolo perfecto. El Dream Team americano de baloncesto debutó en Barcelona. La villa olímpica transformó el frente marítimo de Barcelona para siempre. España ganó 13 medallas de oro. El año 92 selló la integración de España en la modernidad europea."
+  },
+
+  // TEMAS TRANSVERSALES
+  {
+    id:33, emoji:"🗺️", titulo:"Las rutas de El Camino de Santiago",
+    fecha:"siglos IX - XXI", era:"Medieval",
+    categoria:"Cultura", etiqueta:"Religión",
+    desc:"Desde el siglo IX, millones de peregrinos han caminado hacia Santiago de Compostela creyendo que allí reposan los huesos del apóstol Santiago. El Camino Francés atraviesa 800 km. Fue la autopista cultural de la Edad Media y hoy recibe más de 300.000 peregrinos al año.",
+    detalle:"El Codex Calixtinus (siglo XII) es la primera guía turística de la historia. La catedral de Santiago tiene el mayor incensario del mundo (el Botafumeiro), que pesa 80 kg y se columpia a 70 km/h. El Camino salvó muchas ciudades del norte de España del abandono medieval. Paulo Coelho lo popularizó con su novela 'El Peregrino'."
+  },
+  {
+    id:34, emoji:"🏰", titulo:"La Alhambra: el sueño en piedra",
+    fecha:"siglos XIII - XIV", era:"Reconquista",
+    categoria:"Arte", etiqueta:"Al-Ándalus",
+    desc:"El palacio nazarí de la Alhambra en Granada es considerado la cumbre del arte islámico occidental. Sus patios, artesonados, mocárabes y jardines del Generalife representan el paraíso coránico hecho realidad. Washington Irving la inmortalizó en sus 'Cuentos de la Alhambra' (1832).",
+    detalle:"La palabra 'Alhambra' significa 'la roja' en árabe, por el color de su arcilla. Se construyó en el siglo XIII sobre una colina frente a Sierra Nevada. Cuando Fernando e Isabel la tomaron en 1492, el último rey Boabdil lloró al alejarse. La leyenda dice que su madre le espetó: 'Lloras como mujer lo que no supiste defender como hombre'. Es el monumento más visitado de España."
+  },
+  {
+    id:35, emoji:"🔬", titulo:"La medicina árabe que salvó Europa",
+    fecha:"siglos X - XII", era:"Alta Edad Media",
+    categoria:"Ciencia", etiqueta:"Al-Ándalus",
+    desc:"Durante siglos, cuando Europa había perdido el conocimiento médico griego, los médicos de Al-Ándalus lo conservaron, tradujeron y ampliaron. Abulcasis de Córdoba inventó instrumentos quirúrgicos que se usaron hasta el siglo XIX. Averroes sistematizó a Aristóteles para toda Europa.",
+    detalle:"Abulcasis escribió 'Al-Tasrif', una enciclopedia médica de 30 volúmenes con ilustraciones de instrumentos quirúrgicos (el primer manual quirúrgico ilustrado). Los médicos judíos de Toledo tradujeron las obras árabes al latín, haciéndolas accesibles a toda Europa. La Escuela de Traductores de Toledo fue el mayor centro de conocimiento del siglo XII."
+  },
+  {
+    id:36, emoji:"🎭", titulo:"El teatro de Lope de Vega y el Siglo de Oro",
+    fecha:"1580 - 1635", era:"Edad Moderna",
+    categoria:"Cultura", etiqueta:"Barroco",
+    desc:"Lope de Vega escribió más de 1.500 obras de teatro, siendo el escritor más prolífico de la historia. Inventó la comedia española moderna, rompiendo las unidades aristotélicas y mezclando lo trágico con lo cómico. Sus estrenos en los corrales de comedias eran el equivalente a los blockbusters actuales.",
+    detalle:"Lope escribía una comedia en un fin de semana. Tuvo más de 14 amantes conocidas y fue padre de 15 hijos. Se ordenó sacerdote a los 51 años pero siguió teniendo aventuras amorosas. Cervantes lo llamó 'monstruo de la naturaleza'. El Fénix de los Ingenios', como lo llamaban, fue el primer escritor que vivió de su obra."
+  }
+];
+
+// Estado
+let filtroActivo = 'Todos';
+let busqueda = '';
+
+// Extraer eras únicas
+const eras = ['Todos', ...new Set(TEMAS.map(t => t.era))];
+
+// Renderizar filtros
+function renderFiltros() {
+  const cont = document.getElementById('filtros');
+  cont.innerHTML = eras.map(era =>
+    `<button class="filtro-btn ${era === filtroActivo ? 'activo' : ''}"
+      onclick="setFiltro('${era}')">${era}</button>`
+  ).join('');
+}
+
+function setFiltro(era) {
+  filtroActivo = era;
+  renderFiltros();
+  renderGrid();
+}
+
+// Filtrar temas
+function filtrar() {
+  const q = busqueda.toLowerCase();
+  return TEMAS.filter(t => {
+    const matchFiltro = filtroActivo === 'Todos' || t.era === filtroActivo;
+    const matchBusqueda = !q ||
+      t.titulo.toLowerCase().includes(q) ||
+      t.desc.toLowerCase().includes(q) ||
+      t.detalle.toLowerCase().includes(q) ||
+      t.categoria.toLowerCase().includes(q) ||
+      t.era.toLowerCase().includes(q) ||
+      t.etiqueta.toLowerCase().includes(q) ||
+      t.fecha.toLowerCase().includes(q);
+    return matchFiltro && matchBusqueda;
+  });
+}
+
+// Resaltar texto
+function resaltar(texto, q) {
+  if (!q) return texto;
+  const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  return texto.replace(regex, '<mark style="background:#d4a017;color:#1a1a2e;border-radius:2px;padding:0 2px">$1</mark>');
+}
+
+// Renderizar grid
+function renderGrid() {
+  const temas = filtrar();
+  const grid = document.getElementById('grid');
+  document.getElementById('contador').textContent = temas.length;
+
+  if (temas.length === 0) {
+    grid.innerHTML = `<div class="sin-resultados">
+      <span>🔍</span>
+      No se encontraron temas para "<strong>${busqueda}</strong>".<br>
+      Prueba con otro término.
+    </div>`;
+    return;
+  }
+
+  const q = busqueda.toLowerCase();
+  grid.innerHTML = temas.map(t => `
+    <div class="card" onclick="abrirModal(${t.id})">
+      <div class="card-header">
+        <span class="card-emoji">${t.emoji}</span>
+        <div>
+          <div class="card-titulo">${resaltar(t.titulo, q)}</div>
+          <div class="card-fecha">📅 ${t.fecha}</div>
+        </div>
+      </div>
+      <div class="card-descripcion">${resaltar(t.desc.substring(0,160), q)}…</div>
+      <div class="card-tags">
+        <span class="tag tag-era">${t.era}</span>
+        <span class="tag tag-cat">${t.categoria}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Modal
+function abrirModal(id) {
+  const t = TEMAS.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('m-emoji').textContent = t.emoji;
+  document.getElementById('m-titulo').textContent = t.titulo;
+  document.getElementById('m-fecha').textContent = '📅 ' + t.fecha + ' · ' + t.era + ' · ' + t.categoria;
+  document.getElementById('m-desc').textContent = t.desc;
+  document.getElementById('m-detalle').textContent = t.detalle;
+  document.getElementById('modalOverlay').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarModal() {
+  document.getElementById('modalOverlay').classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+// Cerrar modal con Escape o click en overlay
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) cerrarModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') cerrarModal();
+});
+
+// Búsqueda en tiempo real
+document.getElementById('buscador').addEventListener('input', function() {
+  busqueda = this.value.trim();
+  renderGrid();
+});
+
+// Init
+renderFiltros();
+renderGrid();
+</script>
+</body>
+</html>
