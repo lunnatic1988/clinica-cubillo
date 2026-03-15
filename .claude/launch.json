@@ -1,0 +1,6 @@
+{
+  "type": "web",
+  "command": "python3 -m http.server 8080",
+  "cwd": "/home/user/clinica-cubillo",
+  "url": "http://localhost:8080/historia-espana.html"
+}
