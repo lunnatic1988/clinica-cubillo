@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clínica Cubillo | Ginecología y Obstetricia en Madrid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ── Variables ─────────────────────────────────── */
+    :root {
+      --navy:   #0d1b2a;
+      --teal:   #1a6b72;
+      --teal-l: #22909a;
+      --rose:   #c8837a;
+      --cream:  #faf7f4;
+      --white:  #ffffff;
+      --grey:   #6b7280;
+      --light:  #f3f4f6;
+      --border: #e5e7eb;
+      --shadow: 0 4px 24px rgba(13,27,42,.10);
+      --radius: 16px;
+      --font-h: 'Playfair Display', serif;
+      --font-b: 'Inter', sans-serif;
+    }
+
+    /* ── Reset ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-b); color: var(--navy); background: var(--white); line-height: 1.6; }
+    img  { max-width: 100%; display: block; }
+    a    { text-decoration: none; color: inherit; }
+
+    /* ── Utilities ─────────────────────────────────── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section    { padding: 96px 0; }
+    .section-sm { padding: 64px 0; }
+    .tag {
+      display: inline-block;
+      font-size: .75rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--teal);
+      background: rgba(26,107,114,.1); border-radius: 50px;
+      padding: 4px 14px; margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--font-h); font-size: clamp(2rem, 4vw, 2.8rem);
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--grey); max-width: 560px; margin-bottom: 48px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 50px;
+      font-weight: 600; font-size: .95rem; cursor: pointer;
+      transition: all .25s ease; border: none;
+    }
+    .btn-primary  { background: var(--teal); color: var(--white); }
+    .btn-primary:hover { background: var(--teal-l); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(26,107,114,.35); }
+    .btn-outline  { border: 2px solid var(--white); color: var(--white); }
+    .btn-outline:hover { background: var(--white); color: var(--teal); }
+    .btn-rose     { background: var(--rose); color: var(--white); }
+    .btn-rose:hover { background: #b57068; transform: translateY(-2px); }
+
+    /* ── Navbar ────────────────────────────────────── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 18px 0;
+      transition: background .3s, box-shadow .3s, padding .3s;
+    }
+    #navbar.scrolled {
+      background: var(--white);
+      box-shadow: 0 2px 20px rgba(0,0,0,.08);
+      padding: 12px 0;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--font-h); font-size: 1.4rem; color: var(--white);
+      transition: color .3s;
+    }
+    #navbar.scrolled .nav-logo { color: var(--navy); }
+    .nav-logo span { color: var(--rose); }
+    .nav-links {
+      display: flex; align-items: center; gap: 32px; list-style: none;
+    }
+    .nav-links a {
+      font-size: .9rem; font-weight: 500; color: rgba(255,255,255,.85);
+      transition: color .25s;
+    }
+    #navbar.scrolled .nav-links a { color: var(--grey); }
+    .nav-links a:hover { color: var(--white) !important; }
+    #navbar.scrolled .nav-links a:hover { color: var(--teal) !important; }
+    .nav-cta {
+      background: var(--rose); color: var(--white) !important;
+      padding: 10px 22px; border-radius: 50px;
+    }
+    .nav-cta:hover { background: #b57068 !important; color: var(--white) !important; }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white); border-radius: 2px; transition: all .3s;
+    }
+    #navbar.scrolled .hamburger span { background: var(--navy); }
+    .mobile-menu {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--navy); z-index: 999;
+      flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-h); font-size: 1.8rem; color: var(--white);
+    }
+    .mobile-close {
+      position: absolute; top: 24px; right: 24px;
+      background: none; border: none; color: var(--white);
+      font-size: 2rem; cursor: pointer;
+    }
+
+    /* ── Hero ──────────────────────────────────────── */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      background: linear-gradient(135deg, var(--navy) 0%, #193a4d 50%, var(--teal) 100%);
+      position: relative; overflow: hidden;
+    }
+    /* Video de fondo */
+    .hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 0;
+      opacity: 0; transition: opacity 1s ease;
+    }
+    .hero-video.loaded { opacity: 1; }
+    /* Overlay oscuro para que el texto sea legible */
+    .hero-video-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(135deg,
+        rgba(13,27,42,.75) 0%,
+        rgba(25,58,77,.6) 50%,
+        rgba(14,75,80,.55) 100%);
+    }
+    .hero-bg-dots {
+      position: absolute; inset: 0; z-index: 2;
+      background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .hero-blob {
+      position: absolute; bottom: -100px; right: -100px; z-index: 2;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,131,122,.2) 0%, transparent 70%);
+    }
+    .hero-content {
+      position: relative; z-index: 3;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 50px; padding: 8px 16px;
+      font-size: .85rem; color: rgba(255,255,255,.9); margin-bottom: 24px;
+    }
+    .hero-badge i { color: var(--rose); }
+    .hero-title {
+      font-family: var(--font-h);
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      color: var(--white); line-height: 1.15; margin-bottom: 20px;
+    }
+    .hero-title em { color: var(--rose); font-style: normal; }
+    .hero-desc {
+      font-size: 1.1rem; color: rgba(255,255,255,.75); margin-bottom: 36px;
+      max-width: 480px;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 16px; margin-top: 48px;
+    }
+    .stat {
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px; padding: 20px; text-align: center;
+    }
+    .stat-num {
+      font-family: var(--font-h); font-size: 2rem; color: var(--white); font-weight: 700;
+    }
+    .stat-label { font-size: .8rem; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .hero-card {
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 24px; padding: 40px;
+    }
+    .hero-card-title {
+      font-family: var(--font-h); font-size: 1.4rem; color: var(--white); margin-bottom: 24px;
+    }
+    .hero-service-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .hero-service-list li {
+      display: flex; align-items: center; gap: 12px;
+      color: rgba(255,255,255,.85); font-size: .95rem;
+    }
+    .hero-service-list li i { color: var(--rose); width: 18px; }
+    .hero-contact-bar {
+      margin-top: 28px; padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,.15);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .hero-contact-item {
+      display: flex; align-items: center; gap: 10px;
+      color: rgba(255,255,255,.75); font-size: .9rem;
+    }
+    .hero-contact-item i { color: var(--rose); }
+
+    /* ── Trust bar ─────────────────────────────────── */
+    #trust {
+      background: var(--cream);
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .trust-inner {
+      display: flex; align-items: center; justify-content: space-around;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: .9rem; font-weight: 500; color: var(--navy);
+    }
+    .trust-item i { color: var(--teal); font-size: 1.2rem; }
+
+    /* ── Services ──────────────────────────────────── */
+    #services { background: var(--white); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .service-card {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden; cursor: pointer;
+      transition: all .3s ease;
+      display: flex; flex-direction: column;
+    }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(13,27,42,.15); }
+    .service-card-img {
+      width: 100%; height: 180px; object-fit: cover;
+      display: block; transition: transform .4s ease;
+    }
+    .service-card:hover .service-card-img { transform: scale(1.04); }
+    .service-card-img-wrap { overflow: hidden; position: relative; }
+    .service-card-img-wrap::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(13,27,42,.3));
+    }
+    .service-card-body {
+      padding: 24px; flex: 1; display: flex; flex-direction: column; gap: 10px;
+    }
+    .service-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-l));
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: 1.2rem;
+    }
+    .service-title {
+      font-family: var(--font-h); font-size: 1.15rem; margin-top: 4px;
+    }
+    .service-desc { font-size: .9rem; color: var(--grey); line-height: 1.6; flex: 1; }
+    .service-card-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .85rem; font-weight: 600; color: var(--teal);
+      margin-top: 8px; background: none; border: none;
+      cursor: pointer; padding: 0; font-family: var(--font-b);
+    }
+    .service-card-btn:hover { color: var(--teal-l); }
+
+    /* ── Modal ──────────────────────────────────────── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(13,27,42,.7); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--white); border-radius: 24px;
+      max-width: 680px; width: 100%; max-height: 90vh;
+      overflow-y: auto; position: relative;
+      animation: modalIn .3s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(30px) scale(.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-img {
+      width: 100%; height: 260px; object-fit: cover;
+      border-radius: 24px 24px 0 0;
+    }
+    .modal-body { padding: 32px; }
+    .modal-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-l));
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: 1.4rem; margin-bottom: 16px;
+    }
+    .modal-title { font-family: var(--font-h); font-size: 1.8rem; margin-bottom: 12px; }
+    .modal-desc { color: var(--grey); line-height: 1.8; margin-bottom: 20px; }
+    .modal-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .modal-list li { display: flex; align-items: flex-start; gap: 10px; font-size: .95rem; }
+    .modal-list li i { color: var(--teal); margin-top: 3px; flex-shrink: 0; }
+    .modal-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,.9); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: var(--navy); z-index: 1;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .modal-close:hover { background: var(--white); }
+
+    /* ── About / Doctor ────────────────────────────── */
+    #about { background: var(--cream); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .about-img-wrap {
+      position: relative;
+    }
+    .about-img-bg {
+      border-radius: 24px; overflow: hidden;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
+      aspect-ratio: 4/5;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .doctor-placeholder {
+      text-align: center; color: rgba(255,255,255,.7);
+    }
+    .doctor-placeholder i { font-size: 8rem; margin-bottom: 16px; }
+    .doctor-placeholder p { font-family: var(--font-h); font-size: 1.2rem; }
+    .about-badge {
+      position: absolute; bottom: -20px; right: -20px;
+      background: var(--white); border-radius: 16px;
+      padding: 20px 24px; box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .about-badge-num { font-family: var(--font-h); font-size: 2rem; color: var(--teal); }
+    .about-badge-label { font-size: .8rem; color: var(--grey); }
+    .about-text .section-sub { margin-bottom: 24px; }
+    .about-features { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+    .about-features li {
+      display: flex; align-items: flex-start; gap: 12px; font-size: .95rem;
+    }
+    .about-features li i {
+      color: var(--teal); margin-top: 3px; flex-shrink: 0;
+    }
+    .acred-logos {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px;
+      padding-top: 24px; border-top: 1px solid var(--border);
+    }
+    .acred-chip {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 14px;
+      font-size: .8rem; font-weight: 500; color: var(--grey);
+    }
+
+    /* ── Promotions ────────────────────────────────── */
+    #promotions { background: var(--white); }
+    .promo-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .promo-card {
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border); transition: all .3s;
+    }
+    .promo-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .promo-header {
+      padding: 28px 28px 20px;
+      background: linear-gradient(135deg, var(--teal), var(--navy));
+      color: var(--white);
+    }
+    .promo-header.rose { background: linear-gradient(135deg, var(--rose), #8b3d36); }
+    .promo-header.gold { background: linear-gradient(135deg, #b8860b, #8b6508); }
+    .promo-name { font-family: var(--font-h); font-size: 1.25rem; margin-bottom: 6px; }
+    .promo-tag { font-size: .8rem; opacity: .8; }
+    .promo-body { padding: 24px 28px; background: var(--cream); }
+    .promo-includes { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .promo-includes li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: .9rem; color: var(--navy);
+    }
+    .promo-includes li i { color: var(--teal); font-size: .85rem; }
+    .promo-footer {
+      padding: 16px 28px 24px; background: var(--cream);
+      border-top: 1px solid var(--border); display: flex;
+      align-items: center; justify-content: space-between;
+    }
+    .promo-price { font-family: var(--font-h); font-size: 1.6rem; color: var(--teal); }
+    .promo-price small { font-size: .9rem; font-family: var(--font-b); color: var(--grey); }
+
+    /* ── Process ────────────────────────────────────── */
+    #process { background: var(--navy); padding: 96px 0; }
+    #process .section-title, #process .section-sub { color: var(--white); }
+    #process .section-sub { color: rgba(255,255,255,.6); }
+    .steps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 32px; position: relative;
+    }
+    .steps::before {
+      content: ''; position: absolute;
+      top: 36px; left: 10%; right: 10%; height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--rose));
+    }
+    .step { text-align: center; position: relative; }
+    .step-num {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--teal-l));
+      color: var(--white); font-family: var(--font-h); font-size: 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px; position: relative; z-index: 1;
+      border: 3px solid var(--navy);
+    }
+    .step-title {
+      font-family: var(--font-h); font-size: 1.1rem; color: var(--white); margin-bottom: 10px;
+    }
+    .step-desc { font-size: .9rem; color: rgba(255,255,255,.6); }
+
+    /* ── Testimonials ──────────────────────────────── */
+    #testimonials { background: var(--cream); }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .testimonial-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 32px; box-shadow: var(--shadow); border: 1px solid var(--border);
+    }
+    .stars { color: #f59e0b; margin-bottom: 16px; font-size: .9rem; }
+    .t-text { font-size: .95rem; color: var(--grey); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .t-author { display: flex; align-items: center; gap: 12px; }
+    .t-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--rose));
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-weight: 700; font-size: 1rem;
+    }
+    .t-name { font-weight: 600; font-size: .9rem; }
+    .t-date { font-size: .8rem; color: var(--grey); }
+
+    /* ── Contact ────────────────────────────────────── */
+    #contact { background: var(--white); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: start;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 28px; }
+    .contact-block {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 20px; background: var(--cream); border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .contact-block-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-l));
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: 1rem; flex-shrink: 0;
+    }
+    .contact-block-title { font-weight: 600; margin-bottom: 4px; }
+    .contact-block-val { color: var(--grey); font-size: .9rem; }
+    .contact-block-val a { color: var(--teal); font-weight: 500; }
+    .contact-form {
+      background: var(--cream); border-radius: var(--radius);
+      padding: 40px; border: 1px solid var(--border);
+    }
+    .form-title { font-family: var(--font-h); font-size: 1.5rem; margin-bottom: 24px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block; font-size: .85rem; font-weight: 600;
+      margin-bottom: 6px; color: var(--navy);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; padding: 12px 16px;
+      border: 1px solid var(--border); border-radius: 10px;
+      font-family: var(--font-b); font-size: .95rem; color: var(--navy);
+      background: var(--white); transition: border .25s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--teal); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* ── Map ────────────────────────────────────────── */
+    .map-wrap {
+      border-radius: var(--radius); overflow: hidden;
+      height: 300px; background: var(--light);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); margin-top: 24px;
+    }
+    .map-placeholder { text-align: center; color: var(--grey); }
+    .map-placeholder i { font-size: 3rem; color: var(--teal); margin-bottom: 12px; }
+
+    /* ── CTA Banner ─────────────────────────────────── */
+    #cta {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--navy) 100%);
+      padding: 80px 0; text-align: center;
+    }
+    #cta .section-title { color: var(--white); }
+    #cta .section-sub { color: rgba(255,255,255,.7); margin: 0 auto 36px; }
+    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Footer ─────────────────────────────────────── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,.7);
+      padding: 64px 0 28px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 48px;
+    }
+    .footer-logo {
+      font-family: var(--font-h); font-size: 1.4rem; color: var(--white); margin-bottom: 12px;
+    }
+    .footer-logo span { color: var(--rose); }
+    .footer-desc { font-size: .9rem; line-height: 1.7; margin-bottom: 20px; }
+    .footer-social { display: flex; gap: 12px; }
+    .social-btn {
+      width: 38px; height: 38px; border-radius: 8px;
+      background: rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: .9rem; transition: background .25s;
+    }
+    .social-btn:hover { background: var(--teal); }
+    .footer-col-title {
+      font-weight: 600; color: var(--white); margin-bottom: 16px; font-size: .95rem;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links li a { font-size: .9rem; transition: color .25s; }
+    .footer-links li a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 24px; text-align: center; font-size: .85rem;
+    }
+
+    /* ── Floating WhatsApp ──────────────────────────── */
+    .wa-float {
+      position: fixed; bottom: 28px; right: 28px; z-index: 900;
+      width: 60px; height: 60px; border-radius: 50%;
+      background: #25d366; color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem; box-shadow: 0 4px 20px rgba(37,211,102,.4);
+      transition: transform .25s;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+
+    /* ── Animations ─────────────────────────────────── */
+    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ─────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-content { grid-template-columns: 1fr; gap: 40px; }
+      .hero-card { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .steps::before { display: none; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .section { padding: 64px 0; }
+      .hero-stats { grid-template-columns: repeat(3,1fr); gap: 12px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Mobile Menu ──────────────────────────────── -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMobile()"><i class="fas fa-times"></i></button>
+  <a href="#inicio"       onclick="closeMobile()">Inicio</a>
+  <a href="#services"     onclick="closeMobile()">Servicios</a>
+  <a href="#about"        onclick="closeMobile()">La Clínica</a>
+  <a href="#promotions"   onclick="closeMobile()">Tarifas</a>
+  <a href="#testimonials" onclick="closeMobile()">Opiniones</a>
+  <a href="#contact"      onclick="closeMobile()">Contacto</a>
+</div>
+
+<!-- ─── Navbar ───────────────────────────────────── -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#inicio" class="nav-logo">Clínica<span>Cubillo</span></a>
+      <ul class="nav-links">
+        <li><a href="#services">Servicios</a></li>
+        <li><a href="#about">La Clínica</a></li>
+        <li><a href="#promotions">Tarifas</a></li>
+        <li><a href="#testimonials">Opiniones</a></li>
+        <li><a href="#contact">Contacto</a></li>
+        <li><a href="#contact" class="nav-cta">Pedir Cita</a></li>
+      </ul>
+      <div class="hamburger" onclick="openMobile()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── Hero ─────────────────────────────────────── -->
+<section id="inicio">
+  <div id="hero">
+    <video class="hero-video" id="heroBgVideo" autoplay muted loop playsinline>
+      <source src="img/hero-video.mp4" type="video/mp4">
+    </video>
+    <div class="hero-video-overlay"></div>
+    <div class="hero-bg-dots"></div>
+    <div class="hero-blob"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="hero-badge">
+            <i class="fas fa-award"></i>
+            Clínica acreditada · Madrid Retiro
+          </div>
+          <h1 class="hero-title">
+            Tu salud íntima,<br/>en las mejores<br/><em>manos</em>
+          </h1>
+          <p class="hero-desc">
+            Ginecología y Obstetricia de confianza en el corazón de Madrid.
+            Atención personalizada, tecnología de vanguardia y un equipo
+            comprometido con tu bienestar.
+          </p>
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-rose">
+              <i class="fas fa-calendar-plus"></i> Solicitar Cita
+            </a>
+            <a href="https://wa.me/34622957189" target="_blank" class="btn btn-outline">
+              <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <div class="stat-num">+20</div>
+              <div class="stat-label">Años de experiencia</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">20+</div>
+              <div class="stat-label">Especialidades</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">5★</div>
+              <div class="stat-label">Valoración pacientes</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card fade-in">
+          <div class="hero-card-title">Nuestros servicios principales</div>
+          <ul class="hero-service-list">
+            <li><i class="fas fa-check-circle"></i> Consulta ginecológica general</li>
+            <li><i class="fas fa-check-circle"></i> Control de embarazo</li>
+            <li><i class="fas fa-check-circle"></i> Diagnóstico y tratamiento VPH</li>
+            <li><i class="fas fa-check-circle"></i> Rejuvenecimiento vaginal (láser CO₂)</li>
+            <li><i class="fas fa-check-circle"></i> Tratamiento menopausia</li>
+            <li><i class="fas fa-check-circle"></i> Incontinencia urinaria</li>
+            <li><i class="fas fa-check-circle"></i> Diagnóstico rápido ETS</li>
+            <li><i class="fas fa-check-circle"></i> Ginecología pediátrica y adolescente</li>
+          </ul>
+          <div class="hero-contact-bar">
+            <div class="hero-contact-item">
+              <i class="fas fa-phone"></i> 91 573 89 54
+            </div>
+            <div class="hero-contact-item">
+              <i class="fas fa-clock"></i> Lun–Vie: 9:00 – 21:00
+            </div>
+            <div class="hero-contact-item">
+              <i class="fas fa-map-marker-alt"></i> Calle Jericó 2, Madrid (Retiro)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Trust bar ────────────────────────────────── -->
+<section id="trust">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-item"><i class="fas fa-shield-alt"></i> Entorno seguro y discreto</div>
+      <div class="trust-item"><i class="fas fa-microscope"></i> Tecnología diagnóstica avanzada</div>
+      <div class="trust-item"><i class="fas fa-user-md"></i> Equipo especializado</div>
+      <div class="trust-item"><i class="fas fa-calendar-check"></i> Cita online disponible</div>
+      <div class="trust-item"><i class="fas fa-heartbeat"></i> Atención integral mujer y hombre</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Services ─────────────────────────────────── -->
+<section id="services" class="section">
+  <div class="container">
+    <span class="tag">Especialidades</span>
+    <h2 class="section-title">Todo lo que necesitas<br/>en un solo lugar</h2>
+    <p class="section-sub">
+      Ofrecemos más de 20 especialidades médicas para cubrir todas las etapas
+      de la salud de la mujer, desde la adolescencia hasta la menopausia.
+    </p>
+    <div class="services-grid">
+
+      <div class="service-card fade-in" onclick="openModal(0)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/ginecologia.jpg" alt="Ginecología General" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-stethoscope"></i></div>
+          <div class="service-title">Ginecología General</div>
+          <div class="service-desc">Consulta ginecológica completa con ecografía vaginal y mamaria, citología y colposcopia.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(1)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/embarazo.jpg" alt="Control de Embarazo" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-baby"></i></div>
+          <div class="service-title">Control de Embarazo</div>
+          <div class="service-desc">Seguimiento completo del embarazo con las pruebas y ecografías necesarias en cada trimestre.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(2)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/vph.jpg" alt="VPH" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-virus-slash"></i></div>
+          <div class="service-title">Diagnóstico y Tratamiento VPH</div>
+          <div class="service-desc">Detección precoz y tratamiento especializado del Virus del Papiloma Humano.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(3)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/rejuvenecimiento.jpg" alt="Rejuvenecimiento Vaginal" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-spa"></i></div>
+          <div class="service-title">Rejuvenecimiento Vaginal</div>
+          <div class="service-desc">Tratamiento con láser fraccionado de CO₂ para la salud y estética íntima femenina.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(4)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/menopausia.jpg" alt="Menopausia" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-leaf"></i></div>
+          <div class="service-title">Menopausia</div>
+          <div class="service-desc">Tratamientos personalizados para mejorar la calidad de vida durante la menopausia.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(5)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/incontinencia.jpg" alt="Incontinencia Urinaria" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-tint"></i></div>
+          <div class="service-title">Incontinencia Urinaria</div>
+          <div class="service-desc">Diagnóstico y terapias modernas para la incontinencia urinaria de esfuerzo y urgencia.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(6)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/histeroscopia.jpg" alt="Histeroscopia" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-search"></i></div>
+          <div class="service-title">Diagnóstico Histeroscópico</div>
+          <div class="service-desc">Exploración del interior uterino para un diagnóstico preciso y mínimamente invasivo.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(7)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/ets.jpg" alt="ETS" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-vial"></i></div>
+          <div class="service-title">Diagnóstico Rápido ETS</div>
+          <div class="service-desc">Análisis y diagnóstico ágil de enfermedades de transmisión sexual con total confidencialidad.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(8)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/diu.jpg" alt="DIU" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-ring"></i></div>
+          <div class="service-title">Colocación de DIU</div>
+          <div class="service-desc">Inserción profesional del dispositivo intrauterino, tanto hormonal como de cobre.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(9)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/labioplastia.jpg" alt="Labioplastia" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-cut"></i></div>
+          <div class="service-title">Labioplastia</div>
+          <div class="service-desc">Cirugía estética y funcional de los labios menores con resultados naturales.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(10)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/pediatrica.jpg" alt="Ginecología Pediátrica" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-child"></i></div>
+          <div class="service-title">Ginecología Pediátrica</div>
+          <div class="service-desc">Atención especializada para niñas y adolescentes en un entorno cálido y de confianza.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="service-card fade-in" onclick="openModal(11)">
+        <div class="service-card-img-wrap">
+          <img class="service-card-img" src="img/psicologia.jpg" alt="Psicología" loading="lazy"/>
+        </div>
+        <div class="service-card-body">
+          <div class="service-icon"><i class="fas fa-brain"></i></div>
+          <div class="service-title">Psicología y Sexología</div>
+          <div class="service-desc">Apoyo psicológico y sexológico para el bienestar emocional y sexual de nuestros pacientes.</div>
+          <button class="service-card-btn">Ver más <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── Modal de Servicios ─────────────────────── -->
+<div class="modal-overlay" id="serviceModal" onclick="closeModalOutside(event)">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <img class="modal-img" id="modalImg" src="" alt="" />
+    <div class="modal-body">
+      <div class="modal-icon" id="modalIcon"></div>
+      <h3 class="modal-title" id="modalTitle"></h3>
+      <p class="modal-desc" id="modalDesc"></p>
+      <ul class="modal-list" id="modalList"></ul>
+      <div class="modal-actions">
+        <a href="#contact" class="btn btn-primary" onclick="closeModal()">
+          <i class="fas fa-calendar-plus"></i> Solicitar Cita
+        </a>
+        <a href="https://wa.me/34622957189" target="_blank" class="btn btn-rose">
+          <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── About / Doctor ───────────────────────────── -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap fade-in">
+        <div class="about-img-bg">
+          <div class="doctor-placeholder">
+            <i class="fas fa-user-md"></i>
+            <p>Dr. Eduardo Cubillo</p>
+          </div>
+        </div>
+        <div class="about-badge">
+          <div class="about-badge-num">+20</div>
+          <div class="about-badge-label">años de experiencia</div>
+        </div>
+      </div>
+
+      <div class="about-text fade-in">
+        <span class="tag">El equipo</span>
+        <h2 class="section-title">Dr. Eduardo Cubillo Rodríguez</h2>
+        <p class="section-sub">
+          Director Médico de Clínica Cubillo, especialista en Ginecología y Obstetricia,
+          salud femenina y medicina estética íntima. Un profesional comprometido con
+          ofrecer la mejor atención médica en un entorno cercano y de confianza.
+        </p>
+        <ul class="about-features">
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <span>Especialista en Ginecología y Obstetricia con amplia trayectoria clínica</span>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <span>Experto en medicina estética íntima y láser ginecológico</span>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <span>Atención personalizada, profesional y completamente confidencial</span>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <span>Consulta en el exclusivo barrio del Retiro, Madrid</span>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <span>Acreditado por las principales sociedades médicas españolas</span>
+          </li>
+        </ul>
+        <a href="#contact" class="btn btn-primary">
+          <i class="fas fa-calendar-plus"></i> Solicitar Cita
+        </a>
+        <div class="acred-logos">
+          <span class="acred-chip">SEGO</span>
+          <span class="acred-chip">Medicina Láser</span>
+          <span class="acred-chip">Medicina Estética</span>
+          <span class="acred-chip">Doctoralia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Promotions ───────────────────────────────── -->
+<section id="promotions" class="section">
+  <div class="container">
+    <span class="tag">Tarifas y Revisiones</span>
+    <h2 class="section-title">Nuestras revisiones completas</h2>
+    <p class="section-sub">
+      Paquetes diseñados para que cuides tu salud de forma integral, con el mejor precio y sin sorpresas.
+    </p>
+    <div class="promo-grid">
+
+      <div class="promo-card fade-in">
+        <div class="promo-header">
+          <div class="promo-name">Revisión Ginecológica Básica</div>
+          <div class="promo-tag">Lo esencial para tu salud</div>
+        </div>
+        <div class="promo-body">
+          <ul class="promo-includes">
+            <li><i class="fas fa-check"></i> Consulta ginecológica</li>
+            <li><i class="fas fa-check"></i> Ecografía vaginal</li>
+            <li><i class="fas fa-check"></i> Citología cervical</li>
+            <li><i class="fas fa-check"></i> Exploración mamaria</li>
+          </ul>
+        </div>
+        <div class="promo-footer">
+          <div class="promo-price">Consultar <small>precio</small></div>
+          <a href="#contact" class="btn btn-primary" style="padding:10px 20px;font-size:.85rem;">Reservar</a>
+        </div>
+      </div>
+
+      <div class="promo-card fade-in">
+        <div class="promo-header rose">
+          <div class="promo-name">Revisión Ginecológica Completa</div>
+          <div class="promo-tag">La más solicitada ★</div>
+        </div>
+        <div class="promo-body">
+          <ul class="promo-includes">
+            <li><i class="fas fa-check"></i> Consulta ginecológica</li>
+            <li><i class="fas fa-check"></i> Ecografía vaginal y mamaria</li>
+            <li><i class="fas fa-check"></i> Citología + Colposcopia</li>
+            <li><i class="fas fa-check"></i> Exploración mamaria completa</li>
+            <li><i class="fas fa-check"></i> Test VPH incluido</li>
+          </ul>
+        </div>
+        <div class="promo-footer">
+          <div class="promo-price">Consultar <small>precio</small></div>
+          <a href="#contact" class="btn btn-rose" style="padding:10px 20px;font-size:.85rem;">Reservar</a>
+        </div>
+      </div>
+
+      <div class="promo-card fade-in">
+        <div class="promo-header gold">
+          <div class="promo-name">Revisión Premium Integral</div>
+          <div class="promo-tag">Atención total</div>
+        </div>
+        <div class="promo-body">
+          <ul class="promo-includes">
+            <li><i class="fas fa-check"></i> Todo lo anterior</li>
+            <li><i class="fas fa-check"></i> Analítica hormonal completa</li>
+            <li><i class="fas fa-check"></i> Diagnóstico ETS rápido</li>
+            <li><i class="fas fa-check"></i> Consulta de nutrición y sexología</li>
+            <li><i class="fas fa-check"></i> Seguimiento personalizado</li>
+          </ul>
+        </div>
+        <div class="promo-footer">
+          <div class="promo-price">Consultar <small>precio</small></div>
+          <a href="#contact" class="btn btn-primary" style="padding:10px 20px;font-size:.85rem;">Reservar</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── Process ──────────────────────────────────── -->
+<section id="process">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:64px;">
+      <span class="tag" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);">¿Cómo funciona?</span>
+      <h2 class="section-title" style="color:var(--white);">Tu cita en 4 pasos</h2>
+      <p class="section-sub" style="margin:0 auto;">
+        Reservar es sencillo. Te guiamos desde el primer contacto hasta tu consulta.
+      </p>
+    </div>
+    <div class="steps">
+      <div class="step fade-in">
+        <div class="step-num">1</div>
+        <div class="step-title">Contacta con nosotros</div>
+        <div class="step-desc">Llámanos, escríbenos por WhatsApp o rellena el formulario online.</div>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">2</div>
+        <div class="step-title">Elige fecha y hora</div>
+        <div class="step-desc">Te ofrecemos el horario más conveniente de lunes a viernes de 9 a 21h.</div>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">3</div>
+        <div class="step-title">Acude a la consulta</div>
+        <div class="step-desc">Te recibiremos en nuestra clínica en el barrio Retiro, Madrid.</div>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">4</div>
+        <div class="step-title">Recibe tu informe</div>
+        <div class="step-desc">Obtendrás un diagnóstico detallado y un plan de seguimiento personalizado.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Testimonials ─────────────────────────────── -->
+<section id="testimonials" class="section">
+  <div class="container">
+    <span class="tag">Opiniones</span>
+    <h2 class="section-title">Lo que dicen nuestras pacientes</h2>
+    <p class="section-sub">La confianza de nuestras pacientes es nuestro mayor orgullo.</p>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card fade-in">
+        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="t-text">"El Dr. Cubillo es un profesional excelente. Me explicó todo con mucha claridad y me hice todas las pruebas en una sola visita. La clínica es muy moderna y acogedora."</p>
+        <div class="t-author">
+          <div class="t-avatar">M</div>
+          <div>
+            <div class="t-name">María G.</div>
+            <div class="t-date">Enero 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-in">
+        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="t-text">"Fui por un tema delicado y me trataron con mucho respeto y discreción. El trato humano del doctor y su equipo es excepcional. 100% recomendable."</p>
+        <div class="t-author">
+          <div class="t-avatar">L</div>
+          <div>
+            <div class="t-name">Laura P.</div>
+            <div class="t-date">Marzo 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-in">
+        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="t-text">"Llevo varios años siendo paciente de la Clínica Cubillo y siempre he recibido una atención de primera. Me dan mucha confianza y profesionalidad."</p>
+        <div class="t-author">
+          <div class="t-avatar">A</div>
+          <div>
+            <div class="t-name">Ana R.</div>
+            <div class="t-date">Febrero 2024</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── Contact ──────────────────────────────────── -->
+<section id="contact" class="section">
+  <div class="container">
+    <span class="tag">Contacto</span>
+    <h2 class="section-title">¿Hablamos?</h2>
+    <p class="section-sub">Estamos aquí para atenderte. Reserva tu cita o consúltanos sin compromiso.</p>
+
+    <div class="contact-grid">
+      <div class="contact-info fade-in">
+        <div class="contact-block">
+          <div class="contact-block-icon"><i class="fas fa-phone"></i></div>
+          <div>
+            <div class="contact-block-title">Teléfono</div>
+            <div class="contact-block-val"><a href="tel:+34915738954">91 573 89 54</a></div>
+          </div>
+        </div>
+        <div class="contact-block">
+          <div class="contact-block-icon"><i class="fab fa-whatsapp"></i></div>
+          <div>
+            <div class="contact-block-title">WhatsApp</div>
+            <div class="contact-block-val"><a href="https://wa.me/34622957189" target="_blank">622 95 71 89</a></div>
+          </div>
+        </div>
+        <div class="contact-block">
+          <div class="contact-block-icon"><i class="fas fa-envelope"></i></div>
+          <div>
+            <div class="contact-block-title">Email</div>
+            <div class="contact-block-val"><a href="mailto:recepcion@clinicacubillo.com">recepcion@clinicacubillo.com</a></div>
+          </div>
+        </div>
+        <div class="contact-block">
+          <div class="contact-block-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div>
+            <div class="contact-block-title">Dirección</div>
+            <div class="contact-block-val">Calle Jericó, 2 – 28007 Madrid (Retiro)</div>
+          </div>
+        </div>
+        <div class="contact-block">
+          <div class="contact-block-icon"><i class="fas fa-clock"></i></div>
+          <div>
+            <div class="contact-block-title">Horario</div>
+            <div class="contact-block-val">Lunes a Viernes: 9:00 – 21:00</div>
+          </div>
+        </div>
+
+        <div class="map-wrap">
+          <div class="map-placeholder">
+            <i class="fas fa-map-marked-alt"></i>
+            <p style="margin-bottom:8px;font-weight:600;color:var(--navy)">Calle Jericó, 2</p>
+            <p>28007 Madrid – Retiro</p>
+            <a href="https://maps.google.com/?q=Calle+Jericó+2+Madrid" target="_blank"
+               style="color:var(--teal);font-weight:600;font-size:.9rem;margin-top:10px;display:inline-block;">
+               Ver en Google Maps →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form fade-in">
+        <div class="form-title">Solicitar Cita</div>
+        <!-- ⚠️ IMPORTANTE: sustituye TU_ID_FORMSPREE por el ID de tu formulario en formspree.io -->
+        <form id="contactForm" onsubmit="handleForm(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre</label>
+              <input type="text" name="nombre" placeholder="Tu nombre" required />
+            </div>
+            <div class="form-group">
+              <label>Teléfono</label>
+              <input type="tel" name="telefono" placeholder="600 000 000" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="tu@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Servicio de interés</label>
+            <select name="servicio">
+              <option value="">Selecciona un servicio...</option>
+              <option>Consulta ginecológica general</option>
+              <option>Revisión ginecológica completa</option>
+              <option>Control de embarazo</option>
+              <option>Diagnóstico y tratamiento VPH</option>
+              <option>Rejuvenecimiento vaginal (láser)</option>
+              <option>Tratamiento menopausia</option>
+              <option>Incontinencia urinaria</option>
+              <option>Diagnóstico ETS</option>
+              <option>Colocación de DIU</option>
+              <option>Labioplastia</option>
+              <option>Ginecología pediátrica</option>
+              <option>Psicología y sexología</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Mensaje (opcional)</label>
+            <textarea name="mensaje" placeholder="Cuéntanos en qué podemos ayudarte..."></textarea>
+          </div>
+          <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%;justify-content:center;">
+            <i class="fas fa-paper-plane"></i> Enviar solicitud
+          </button>
+          <p id="formMsg" style="font-size:.85rem;margin-top:12px;text-align:center;display:none;"></p>
+          <p style="font-size:.8rem;color:var(--grey);margin-top:8px;text-align:center;">
+            Nos pondremos en contacto contigo en menos de 24 horas.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA Banner ───────────────────────────────── -->
+<section id="cta">
+  <div class="container">
+    <h2 class="section-title">Tu salud no puede esperar</h2>
+    <p class="section-sub">
+      Reserva tu cita hoy y recibe una atención ginecológica de primer nivel en Madrid.
+    </p>
+    <div class="cta-actions">
+      <a href="tel:+34915738954" class="btn btn-rose">
+        <i class="fas fa-phone"></i> Llamar ahora
+      </a>
+      <a href="https://wa.me/34622957189" target="_blank" class="btn btn-outline">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
+      <a href="#contact" class="btn" style="background:rgba(255,255,255,.15);color:var(--white);border:1px solid rgba(255,255,255,.3);">
+        <i class="fas fa-envelope"></i> Formulario de contacto
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ───────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Clínica<span>Cubillo</span></div>
+        <p class="footer-desc">
+          Ginecología y Obstetricia de referencia en Madrid. Cuidamos tu salud con
+          profesionalidad, tecnología avanzada y un trato cercano y humano.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/34622957189" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Servicios</div>
+        <ul class="footer-links">
+          <li><a href="#services">Ginecología General</a></li>
+          <li><a href="#services">Control de Embarazo</a></li>
+          <li><a href="#services">VPH</a></li>
+          <li><a href="#services">Rejuvenecimiento Vaginal</a></li>
+          <li><a href="#services">Menopausia</a></li>
+          <li><a href="#services">Labioplastia</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Clínica</div>
+        <ul class="footer-links">
+          <li><a href="#about">El Doctor</a></li>
+          <li><a href="#promotions">Tarifas</a></li>
+          <li><a href="#testimonials">Opiniones</a></li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contacto</div>
+        <ul class="footer-links">
+          <li><a href="tel:+34915738954"><i class="fas fa-phone" style="margin-right:6px;color:var(--teal)"></i>91 573 89 54</a></li>
+          <li><a href="https://wa.me/34622957189"><i class="fab fa-whatsapp" style="margin-right:6px;color:var(--teal)"></i>622 95 71 89</a></li>
+          <li><a href="mailto:recepcion@clinicacubillo.com"><i class="fas fa-envelope" style="margin-right:6px;color:var(--teal)"></i>Email</a></li>
+          <li><span><i class="fas fa-map-marker-alt" style="margin-right:6px;color:var(--teal)"></i>Calle Jericó, 2 Madrid</span></li>
+          <li><span><i class="fas fa-clock" style="margin-right:6px;color:var(--teal)"></i>Lun–Vie 9:00–21:00</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Clínica Cubillo – Ginecología y Obstetricia en Madrid. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── Floating WhatsApp ────────────────────────── -->
+<a href="https://wa.me/34622957189" target="_blank" class="wa-float" title="Escríbenos por WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- ─── Scripts ──────────────────────────────────── -->
+<script>
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Mobile menu
+  function openMobile()  { document.getElementById('mobileMenu').classList.add('open'); }
+  function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── Datos de servicios para el modal ─────────────
+  const services = [
+    {
+      title: 'Ginecología General',
+      icon: '<i class="fas fa-stethoscope"></i>',
+      img: 'img/ginecologia.jpg',
+      desc: 'La consulta ginecológica general es el pilar de la salud femenina. Realizamos una exploración completa, preventiva y personalizada para detectar cualquier alteración de forma precoz.',
+      items: ['Exploración ginecológica completa', 'Ecografía vaginal y transvaginal', 'Ecografía mamaria', 'Citología cervical (Papanicolaou)', 'Colposcopia digital', 'Orientación anticonceptiva', 'Revisión anual preventiva']
+    },
+    {
+      title: 'Control de Embarazo',
+      icon: '<i class="fas fa-baby"></i>',
+      img: 'img/embarazo.jpg',
+      desc: 'Acompañamos a la futura mamá durante todo su embarazo con un seguimiento cercano, detallado y personalizado. Nuestro objetivo es que vivas esta etapa con total tranquilidad y seguridad.',
+      items: ['Confirmación y datación del embarazo', 'Ecografías del 1.º, 2.º y 3.º trimestre', 'Ecografía morfológica 20 semanas', 'Control de analíticas y tensión', 'Diagnóstico prenatal', 'Preparación al parto', 'Atención postparto']
+    },
+    {
+      title: 'Diagnóstico y Tratamiento VPH',
+      icon: '<i class="fas fa-virus-slash"></i>',
+      img: 'img/vph.jpg',
+      desc: 'El Virus del Papiloma Humano es la infección de transmisión sexual más frecuente. Con diagnóstico precoz y tratamiento adecuado, se puede controlar y eliminar eficazmente.',
+      items: ['Test de VPH de alta sensibilidad', 'Tipado viral completo (genotipado)', 'Colposcopia y biopsia si necesario', 'Tratamiento con láser CO₂', 'Crioterapia y electrocoagulación', 'Seguimiento y control periódico', 'Vacunación y prevención']
+    },
+    {
+      title: 'Rejuvenecimiento Vaginal',
+      icon: '<i class="fas fa-spa"></i>',
+      img: 'img/rejuvenecimiento.jpg',
+      desc: 'El láser fraccionado de CO₂ es el tratamiento de referencia para la salud y el bienestar íntimo femenino. Mejora la sequedad, la elasticidad y la calidad de vida de la mujer de forma segura y eficaz.',
+      items: ['Láser fraccionado de CO₂ de última generación', 'Tratamiento de sequedad vaginal (atrofia)', 'Mejora de la laxitud vaginal', 'Alivio de la incontinencia de esfuerzo leve', 'Tratamiento ambulatorio sin anestesia', '3 sesiones recomendadas (espaciadas 4 semanas)', 'Resultados visibles desde la primera sesión']
+    },
+    {
+      title: 'Menopausia',
+      icon: '<i class="fas fa-leaf"></i>',
+      img: 'img/menopausia.jpg',
+      desc: 'La menopausia es una etapa natural en la vida de la mujer. Con el tratamiento adecuado, los síntomas se controlan y la calidad de vida mejora notablemente. Te acompañamos en este proceso.',
+      items: ['Diagnóstico y evaluación hormonal', 'Terapia hormonal sustitutiva (THS) personalizada', 'Tratamientos no hormonales', 'Control de sofocos y sudoración nocturna', 'Prevención de osteoporosis', 'Cuidado cardiovascular', 'Apoyo psicológico y sexológico']
+    },
+    {
+      title: 'Incontinencia Urinaria',
+      icon: '<i class="fas fa-tint"></i>',
+      img: 'img/incontinencia.jpg',
+      desc: 'La incontinencia urinaria afecta a millones de mujeres y tiene solución. En Clínica Cubillo disponemos de los tratamientos más avanzados para recuperar tu calidad de vida.',
+      items: ['Diagnóstico preciso del tipo de incontinencia', 'Tratamiento con láser vaginal CO₂', 'Fisioterapia del suelo pélvico', 'Electroestimulación', 'Tratamiento farmacológico', 'Derivación quirúrgica si es necesario', 'Seguimiento y prevención de recaídas']
+    },
+    {
+      title: 'Diagnóstico Histeroscópico',
+      icon: '<i class="fas fa-search"></i>',
+      img: 'img/histeroscopia.jpg',
+      desc: 'La histeroscopia permite visualizar el interior del útero de forma directa y precisa, siendo la técnica de elección para el diagnóstico y tratamiento de múltiples patologías uterinas.',
+      items: ['Histeroscopia diagnóstica ambulatoria', 'Histeroscopia quirúrgica', 'Diagnóstico de miomas y pólipos', 'Estudio de sangrados irregulares', 'Evaluación de infertilidad uterina', 'Extracción de DIU perdido', 'Sin anestesia general en la mayoría de casos']
+    },
+    {
+      title: 'Diagnóstico Rápido ETS',
+      icon: '<i class="fas fa-vial"></i>',
+      img: 'img/ets.jpg',
+      desc: 'Las enfermedades de transmisión sexual requieren diagnóstico precoz y confidencial. Ofrecemos un servicio rápido, discreto y profesional con resultados en el menor tiempo posible.',
+      items: ['Panel completo de ETS', 'Test rápido de VIH, sífilis y hepatitis', 'Cultivo y PCR para gonorrea y clamidia', 'Herpes genital (VHS 1 y 2)', 'Resultado en 24-48 horas', 'Tratamiento inmediato si necesario', 'Consejo y prevención sexual']
+    },
+    {
+      title: 'Colocación de DIU',
+      icon: '<i class="fas fa-ring"></i>',
+      img: 'img/diu.jpg',
+      desc: 'El DIU es uno de los métodos anticonceptivos más eficaces y seguros. En Clínica Cubillo realizamos la inserción de forma profesional y confortable, con atención personalizada.',
+      items: ['DIU de cobre (no hormonal)', 'DIU hormonal (Mirena, Kyleena, Jaydess)', 'Inserción cómoda y controlada', 'Ecografía de control tras inserción', 'Duración de 3 a 10 años según tipo', 'Extracción cuando desees', 'Revisión al mes de la colocación']
+    },
+    {
+      title: 'Labioplastia',
+      icon: '<i class="fas fa-cut"></i>',
+      img: 'img/labioplastia.jpg',
+      desc: 'La labioplastia es una intervención estética y funcional que mejora tanto el aspecto como la comodidad en la zona íntima. Se realiza en consulta con anestesia local y recuperación rápida.',
+      items: ['Reducción de labios menores hipertróficos', 'Corrección de asimetría labial', 'Cirugía estética de labios mayores', 'Anestesia local ambulatoria', 'Técnica de mínima cicatriz', 'Recuperación en 1-2 semanas', 'Resultados naturales y armoniosos']
+    },
+    {
+      title: 'Ginecología Pediátrica',
+      icon: '<i class="fas fa-child"></i>',
+      img: 'img/pediatrica.jpg',
+      desc: 'La salud ginecológica comienza desde la infancia. Atendemos a niñas y adolescentes en un entorno especialmente diseñado para ellas, con un equipo experto y un trato cercano y respetuoso.',
+      items: ['Consulta ginecológica para niñas y adolescentes', 'Primera visita y educación sexual', 'Trastornos del ciclo menstrual', 'Dismenorrea (dolor menstrual)', 'Síndrome de ovario poliquístico (SOP)', 'Vacunación frente al VPH', 'Orientación anticonceptiva para adolescentes']
+    },
+    {
+      title: 'Psicología y Sexología',
+      icon: '<i class="fas fa-brain"></i>',
+      img: 'img/psicologia.jpg',
+      desc: 'La salud sexual y emocional es parte fundamental del bienestar. Nuestro equipo de psicología y sexología ofrece un espacio seguro y profesional para trabajar cualquier dificultad íntima o emocional.',
+      items: ['Terapia individual y de pareja', 'Disfunción sexual femenina y masculina', 'Vaginismo y dispareunia', 'Bajo deseo sexual', 'Ansiedad y depresión asociada', 'Educación sexual y afectiva', 'Sesiones presenciales y online']
+    }
+  ];
+
+  function openModal(index) {
+    const s = services[index];
+    document.getElementById('modalImg').src   = s.img;
+    document.getElementById('modalImg').alt   = s.title;
+    document.getElementById('modalIcon').innerHTML = s.icon;
+    document.getElementById('modalTitle').textContent = s.title;
+    document.getElementById('modalDesc').textContent  = s.desc;
+    const list = document.getElementById('modalList');
+    list.innerHTML = s.items.map(item => `<li><i class="fas fa-check-circle"></i><span>${item}</span></li>`).join('');
+    document.getElementById('serviceModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('serviceModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('serviceModal')) closeModal();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // ── Vídeo hero background ────────────────────────
+  const heroVideo = document.getElementById('heroBgVideo');
+  if (heroVideo) {
+    heroVideo.addEventListener('canplay', () => heroVideo.classList.add('loaded'));
+    // Si ya está en caché y listo
+    if (heroVideo.readyState >= 3) heroVideo.classList.add('loaded');
+  }
+
+  // ── Formspree integration ────────────────────────
+  // PASO: Sustituye TU_ID_FORMSPREE por el ID que obtienes en https://formspree.io
+  const FORMSPREE_ID = 'TU_ID_FORMSPREE';
+
+  async function handleForm(e) {
+    e.preventDefault();
+    const form   = e.target;
+    const btn    = document.getElementById('submitBtn');
+    const msg    = document.getElementById('formMsg');
+
+    // Estado: enviando
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+    msg.style.display = 'none';
+
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        btn.innerHTML = '<i class="fas fa-check"></i> ¡Mensaje enviado!';
+        btn.style.background = '#22c55e';
+        msg.textContent = '✅ Hemos recibido tu solicitud. Te contactaremos en breve.';
+        msg.style.color = '#16a34a';
+        msg.style.display = 'block';
+        form.reset();
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar solicitud';
+          btn.style.background = '';
+          btn.disabled = false;
+          msg.style.display = 'none';
+        }, 5000);
+      } else {
+        throw new Error('Error en el servidor');
+      }
+    } catch (err) {
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar solicitud';
+      btn.style.background = '';
+      btn.disabled = false;
+      msg.textContent = '❌ Error al enviar. Por favor llámanos al 91 573 89 54.';
+      msg.style.color = '#dc2626';
+      msg.style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>
